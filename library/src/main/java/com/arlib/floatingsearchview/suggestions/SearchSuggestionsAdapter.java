@@ -18,14 +18,16 @@ package com.arlib.floatingsearchview.suggestions;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.support.v4.graphics.drawable.DrawableCompat;
-import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.arlib.floatingsearchview.R;
 import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion;
@@ -66,53 +68,6 @@ public class SearchSuggestionsAdapter extends RecyclerView.Adapter<RecyclerView.
         void onMoveItemToSearchClicked(SearchSuggestion item);
     }
 
-    public static class SearchSuggestionViewHolder extends RecyclerView.ViewHolder {
-
-        public TextView body;
-        public ImageView leftIcon;
-        public ImageView rightIcon;
-
-        private Listener mListener;
-
-        public interface Listener {
-
-            void onItemClicked(int adapterPosition);
-
-            void onMoveItemToSearchClicked(int adapterPosition);
-        }
-
-        public SearchSuggestionViewHolder(View v, Listener listener) {
-            super(v);
-
-            mListener = listener;
-            body = (TextView) v.findViewById(R.id.body);
-            leftIcon = (ImageView) v.findViewById(R.id.left_icon);
-            rightIcon = (ImageView) v.findViewById(R.id.right_icon);
-
-            rightIcon.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    int adapterPosition = getAdapterPosition();
-                    if (mListener != null && adapterPosition != RecyclerView.NO_POSITION) {
-                        mListener.onMoveItemToSearchClicked(getAdapterPosition());
-                    }
-                }
-            });
-
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    int adapterPosition = getAdapterPosition();
-                    if (mListener != null && adapterPosition != RecyclerView.NO_POSITION) {
-                        mListener.onItemClicked(adapterPosition);
-                    }
-                }
-            });
-        }
-    }
-
     public SearchSuggestionsAdapter(Context context, int suggestionTextSize, Listener listener) {
         this.mContext = context;
         this.mListener = listener;
@@ -122,21 +77,8 @@ public class SearchSuggestionsAdapter extends RecyclerView.Adapter<RecyclerView.
         DrawableCompat.setTint(mRightIconDrawable, Util.getColor(mContext, R.color.gray_active_icon));
     }
 
-    public void swapData(List<? extends SearchSuggestion> searchSuggestions) {
-        mSearchSuggestions = searchSuggestions;
-        notifyDataSetChanged();
-    }
-
-    public List<? extends SearchSuggestion> getDataSet() {
-        return mSearchSuggestions;
-    }
-
-    public void setOnBindSuggestionCallback(OnBindSuggestionCallback callback) {
-        this.mOnBindSuggestionCallback = callback;
-    }
-
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
 
         View view = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.search_suggestion_item, viewGroup, false);
@@ -166,6 +108,60 @@ public class SearchSuggestionsAdapter extends RecyclerView.Adapter<RecyclerView.
         viewHolder.body.setTextSize(TypedValue.COMPLEX_UNIT_PX, mBodyTextSizePx);
 
         return viewHolder;
+    }
+
+    public void swapData(List<? extends SearchSuggestion> searchSuggestions) {
+        mSearchSuggestions = searchSuggestions;
+        notifyDataSetChanged();
+    }
+
+    public List<? extends SearchSuggestion> getDataSet() {
+        return mSearchSuggestions;
+    }
+
+    public void setOnBindSuggestionCallback(OnBindSuggestionCallback callback) {
+        this.mOnBindSuggestionCallback = callback;
+    }
+
+    public static class SearchSuggestionViewHolder extends RecyclerView.ViewHolder {
+
+        TextView body;
+        ImageView leftIcon;
+        ImageView rightIcon;
+
+        private Listener mListener;
+
+        public interface Listener {
+
+            void onItemClicked(int adapterPosition);
+
+            void onMoveItemToSearchClicked(int adapterPosition);
+        }
+
+        SearchSuggestionViewHolder(View v, Listener listener) {
+            super(v);
+
+            mListener = listener;
+            body = v.findViewById(R.id.body);
+            leftIcon = v.findViewById(R.id.left_icon);
+            rightIcon = v.findViewById(R.id.right_icon);
+
+            rightIcon.setOnClickListener((View v1) -> {
+
+                int adapterPosition = getAdapterPosition();
+                if (mListener != null && adapterPosition != RecyclerView.NO_POSITION) {
+                    mListener.onMoveItemToSearchClicked(getAdapterPosition());
+                }
+            });
+
+            itemView.setOnClickListener((View v12) -> {
+
+                int adapterPosition = getAdapterPosition();
+                if (mListener != null && adapterPosition != RecyclerView.NO_POSITION) {
+                    mListener.onItemClicked(adapterPosition);
+                }
+            });
+        }
     }
 
     @Override

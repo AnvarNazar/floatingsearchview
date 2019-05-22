@@ -8,9 +8,6 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.content.res.ResourcesCompat;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,6 +17,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.res.ResourcesCompat;
 
 import com.arlib.floatingsearchview.FloatingSearchView;
 import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion;
@@ -34,7 +35,7 @@ import java.util.List;
 public class SlidingSearchViewExampleFragment extends BaseExampleFragment {
     private final String TAG = "BlankFragment";
 
-    public static final long FIND_SUGGESTION_SIMULATED_DELAY = 250;
+    private static final long FIND_SUGGESTION_SIMULATED_DELAY = 250;
 
     private static final long ANIM_DURATION = 350;
 

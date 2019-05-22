@@ -1,7 +1,7 @@
 package com.arlib.floatingsearchbiew.rxbinding;
 
-import android.support.annotation.CheckResult;
-import android.support.annotation.NonNull;
+import androidx.annotation.CheckResult;
+import androidx.annotation.NonNull;
 
 import com.arlib.floatingsearchview.FloatingSearchView;
 import com.jakewharton.rxbinding2.InitialValueObservable;
@@ -23,7 +23,7 @@ public final class RxFloatingSearchView {
         return new QueryObservable(view, characterLimit);
     }
 
-    public static void checkNotNull(Object value, String message) {
+    private static void checkNotNull(Object value, String message) {
         if (value == null) {
             throw new NullPointerException(message);
         }

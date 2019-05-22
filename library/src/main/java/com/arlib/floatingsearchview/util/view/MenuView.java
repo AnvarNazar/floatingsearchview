@@ -20,10 +20,8 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.content.Context;
-import android.support.v7.view.SupportMenuInflater;
-import android.support.v7.view.menu.MenuBuilder;
-import android.support.v7.view.menu.MenuItemImpl;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -35,6 +33,10 @@ import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+
+import androidx.appcompat.view.SupportMenuInflater;
+import androidx.appcompat.view.menu.MenuBuilder;
+import androidx.appcompat.view.menu.MenuItemImpl;
 
 import com.arlib.floatingsearchview.R;
 import com.arlib.floatingsearchview.util.MenuPopupHelper;
@@ -100,6 +102,7 @@ public class MenuView extends LinearLayout {
         return mMenuItems;
     }
 
+    @SuppressLint("RestrictedApi")
     private void init() {
         mMenuBuilder = new MenuBuilder(getContext());
         mMenuPopupHelper = new MenuPopupHelper(getContext(), mMenuBuilder, this);
@@ -149,6 +152,7 @@ public class MenuView extends LinearLayout {
      *                   android:showAsAction="ifRoom" or android:showAsAction="always"
      *                   will show as actions.
      */
+    @SuppressLint("RestrictedApi")
     public void reset(int menu, int availWidth) {
         mMenu = menu;
         if (mMenu == -1) {
@@ -272,6 +276,7 @@ public class MenuView extends LinearLayout {
      *
      * @param withAnim
      */
+    @SuppressLint("RestrictedApi")
     public void hideIfRoomItems(boolean withAnim) {
 
         if (mMenu == -1) {
@@ -281,12 +286,7 @@ public class MenuView extends LinearLayout {
         mActionShowAlwaysItems.clear();
         cancelChildAnimListAndClear();
 
-        List<MenuItemImpl> showAlwaysActionItems = filter(mMenuItems, new MenuItemImplPredicate() {
-            @Override
-            public boolean apply(MenuItemImpl menuItem) {
-                return  menuItem.getIcon() != null && menuItem.requiresActionButton();
-            }
-        });
+        List<MenuItemImpl> showAlwaysActionItems = filter(mMenuItems, menuItem -> menuItem.getIcon() != null && menuItem.requiresActionButton());
 
         int actionItemIndex;
         for (actionItemIndex = 0;
@@ -414,6 +414,7 @@ public class MenuView extends LinearLayout {
      *
      * @param withAnim
      */
+    @SuppressLint("RestrictedApi")
     public void showIfRoomItems(boolean withAnim) {
 
         if (mMenu == -1) {
@@ -438,13 +439,10 @@ public class MenuView extends LinearLayout {
                 final MenuItem actionItem = mActionItems.get(i);
                 action.setImageDrawable(actionItem.getIcon());
                 Util.setIconColor(action, mActionIconColor);
-                action.setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
+                action.setOnClickListener((View v) -> {
 
-                        if (mMenuCallback != null) {
-                            mMenuCallback.onMenuItemSelected(mMenuBuilder, actionItem);
-                        }
+                    if (mMenuCallback != null) {
+                        mMenuCallback.onMenuItemSelected(mMenuBuilder, actionItem);
                     }
                 });
             }
@@ -537,6 +535,7 @@ public class MenuView extends LinearLayout {
         return result;
     }
 
+    @SuppressLint("RestrictedApi")
     private MenuInflater getMenuInflater() {
         if (mMenuInflater == null) {
             mMenuInflater = new SupportMenuInflater(getContext());
