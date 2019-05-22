@@ -25,16 +25,16 @@ public class ColorSuggestion implements SearchSuggestion {
     private String mColorName;
     private boolean mIsHistory = false;
 
-    public ColorSuggestion(String suggestion) {
+    ColorSuggestion(String suggestion) {
         this.mColorName = suggestion.toLowerCase();
     }
 
-    public ColorSuggestion(Parcel source) {
+    private ColorSuggestion(Parcel source) {
         this.mColorName = source.readString();
         this.mIsHistory = source.readInt() != 0;
     }
 
-    public void setIsHistory(boolean isHistory) {
+    void setIsHistory(boolean isHistory) {
         this.mIsHistory = isHistory;
     }
 

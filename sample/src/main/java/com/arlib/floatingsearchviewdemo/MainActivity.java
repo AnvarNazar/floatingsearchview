@@ -17,6 +17,7 @@ package com.arlib.floatingsearchviewdemo;
  */
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
@@ -35,8 +36,6 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity
         implements BaseExampleFragment.BaseExampleFragmentCallbacks, NavigationView.OnNavigationItemSelectedListener {
 
-    private final String TAG = "MainActivity";
-
     private DrawerLayout mDrawerLayout;
 
     @Override
@@ -44,8 +43,8 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        mDrawerLayout = findViewById(R.id.drawer_layout);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         showFragment(new SlidingSearchResultsExampleFragment());
@@ -67,7 +66,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean onNavigationItemSelected(MenuItem menuItem) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         mDrawerLayout.closeDrawer(GravityCompat.START);
         switch (menuItem.getItemId()) {
             case R.id.sliding_list_example:
